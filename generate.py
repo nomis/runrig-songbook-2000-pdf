@@ -33,7 +33,11 @@ prefix = f"s{pc}_q{qual}_"
 dpi = dimensions["dpi"]
 scale = 72 / dpi
 
-canvas = Canvas(f"{prefix}output.pdf~", pagesize=(width * scale, height * scale))
+subset = ""
+if len(sys.argv) >= 4:
+	subset = "_subset_" + "_".join(sys.argv[3:])
+out_filename = f"{prefix}output{subset}.pdf"
+canvas = Canvas(f"{out_filename}~", pagesize=(width * scale, height * scale))
 
 prev_page_num = 0
 prev_page_style = PDFPageLabel.ARABIC
@@ -43,6 +47,9 @@ bookmarks = set()
 
 def add_page(canvas, filename, page_num, page_style=PDFPageLabel.ARABIC, page_prefix=None):
 	global prev_page_num, prev_page_style, prev_page_prefix
+
+	if len(sys.argv) >= 4 and filename not in sys.argv[3:]:
+		return
 
 	img_filename = f"pages/{prefix}{filename}.jpg"
 
@@ -79,4 +86,4 @@ for key, value in names.items():
 		canvas.addOutlineEntry(value, key, 0, True)
 
 canvas.save()
-os.rename(f"{prefix}output.pdf~", f"{prefix}output.pdf")
+os.rename(f"{out_filename}~", f"{out_filename}")
