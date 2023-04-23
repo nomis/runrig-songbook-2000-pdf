@@ -14,25 +14,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from argparse import ArgumentParser
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.pdfbase.pdfdoc import PDFPageLabel
 from PIL import Image
-import math
 import os
-import sys
 import toml
+
+parser = ArgumentParser()
+parser.add_argument("size", type=int, help="Size in %%")
+parser.add_argument("quality", type=int, help="Quality in %%")
+parser.add_argument("dpi", type=int, help="Dots per inch")
+parser.add_argument("--subset", type=str, metavar="PAGE", nargs="+", help="Output only a subset of pages")
+args = parser.parse_args()
 
 names = toml.load("names.toml")
 
-pc = int(sys.argv[1])
-qual = int(sys.argv[2])
-prefix = f"s{pc}_q{qual}_"
-dpi = int(sys.argv[3])
-scale = 72 / dpi
+prefix = f"s{args.size}_q{args.quality}_"
+scale = 72 / args.dpi
 
 subset = ""
-if len(sys.argv) >= 5:
-	subset = "_subset_" + "_".join(sys.argv[3:])
+if args.subset:
+	subset = "_subset_" + "_".join(args.subset)
 out_filename = f"{prefix}output{subset}.pdf"
 canvas = Canvas(f"{out_filename}~")
 
@@ -45,7 +48,7 @@ bookmarks = set()
 def add_page(canvas, filename, page_num, page_style=PDFPageLabel.ARABIC, page_prefix=None):
 	global prev_page_num, prev_page_style, prev_page_prefix
 
-	if len(sys.argv) >= 5 and filename not in sys.argv[3:]:
+	if args.subset and filename not in args.subset:
 		return
 
 	img_filename = f"pages/{prefix}{filename}.jpg"
