@@ -1,3 +1,5 @@
+DPI=192
+
 all: \
 	s50_q90_output.pdf \
 	s40_q90_output.pdf \
@@ -5,22 +7,22 @@ all: \
 	s25_q90_output.pdf \
 	s15_q20_output.pdf
 
-DEPS=generate.py dimensions.toml names.toml
+DEPS=generate.py names.toml
 
 s50_q90_output.pdf: $(patsubst ../pages/%.jpg,pages/s50_q90_%.jpg,$(wildcard ../pages/*.jpg)) $(DEPS)
-	pipenv run ./generate.py 50 90
+	pipenv run ./generate.py 50 90 $(DPI)
 
 s40_q90_output.pdf: $(patsubst ../pages/%.jpg,pages/s40_q90_%.jpg,$(wildcard ../pages/*.jpg)) $(DEPS)
-	pipenv run ./generate.py 40 90
+	pipenv run ./generate.py 40 90 $(DPI)
 
 s33_q90_output.pdf: $(patsubst ../pages/%.jpg,pages/s33_q90_%.jpg,$(wildcard ../pages/*.jpg)) $(DEPS)
-	pipenv run ./generate.py 33 90
+	pipenv run ./generate.py 33 90 $(DPI)
 
 s25_q90_output.pdf: $(patsubst ../pages/%.jpg,pages/s25_q90_%.jpg,$(wildcard ../pages/*.jpg)) $(DEPS)
-	pipenv run ./generate.py 25 90
+	pipenv run ./generate.py 25 90 $(DPI)
 
 s15_q20_output.pdf: $(patsubst ../pages/%.jpg,pages/s15_q20_%.jpg,$(wildcard ../pages/*.jpg)) $(DEPS)
-	pipenv run ./generate.py 15 20
+	pipenv run ./generate.py 15 20 $(DPI)
 
 pages:
 	mkdir -p pages

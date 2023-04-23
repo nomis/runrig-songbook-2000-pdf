@@ -22,22 +22,19 @@ import os
 import sys
 import toml
 
-dimensions = toml.load("dimensions.toml")
 names = toml.load("names.toml")
 
 pc = int(sys.argv[1])
 qual = int(sys.argv[2])
-width = math.ceil(dimensions["width"] * pc / 100)
-height = math.ceil(dimensions["height"] * pc / 100)
 prefix = f"s{pc}_q{qual}_"
-dpi = dimensions["dpi"]
+dpi = int(sys.argv[3])
 scale = 72 / dpi
 
 subset = ""
-if len(sys.argv) >= 4:
+if len(sys.argv) >= 5:
 	subset = "_subset_" + "_".join(sys.argv[3:])
 out_filename = f"{prefix}output{subset}.pdf"
-canvas = Canvas(f"{out_filename}~", pagesize=(width * scale, height * scale))
+canvas = Canvas(f"{out_filename}~")
 
 prev_page_num = 0
 prev_page_style = PDFPageLabel.ARABIC
@@ -48,7 +45,7 @@ bookmarks = set()
 def add_page(canvas, filename, page_num, page_style=PDFPageLabel.ARABIC, page_prefix=None):
 	global prev_page_num, prev_page_style, prev_page_prefix
 
-	if len(sys.argv) >= 4 and filename not in sys.argv[3:]:
+	if len(sys.argv) >= 5 and filename not in sys.argv[3:]:
 		return
 
 	img_filename = f"pages/{prefix}{filename}.jpg"
