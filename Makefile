@@ -1,10 +1,10 @@
 .PHONY: all clean distclean
 
-DPI_100=768
-DPI_50=384
-DPI_39=300
-DPI_25=192
-DPI_15=115
+DPI_100=568
+DPI_50=284
+DPI_39=222
+DPI_25=142
+DPI_15=85
 
 DEPS=generate.py names.toml
 FILES=\
