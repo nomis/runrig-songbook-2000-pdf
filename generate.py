@@ -28,7 +28,7 @@ parser.add_argument("dpi", type=int, help="Dots per inch")
 parser.add_argument("--subset", type=str, metavar="PAGE", nargs="+", help="Output only a subset of pages")
 args = parser.parse_args()
 
-names = toml.load("names.toml")
+metadata = toml.load("metadata.toml")
 
 prefix = f"s{args.size}_q{args.quality}_"
 scale = 72 / args.dpi
@@ -44,6 +44,10 @@ prev_page_style = PDFPageLabel.ARABIC
 prev_page_prefix = None
 
 bookmarks = set()
+
+canvas.setTitle(metadata["title"])
+canvas.setAuthor(metadata["author"])
+canvas.setSubject(metadata["subject"])
 
 def add_page(canvas, filename, page_num, page_style=PDFPageLabel.ARABIC, page_prefix=None):
 	global prev_page_num, prev_page_style, prev_page_prefix
@@ -81,7 +85,7 @@ for page in range(1, 297):
 add_page(canvas, f"297a", 1, page_prefix="B")
 add_page(canvas, f"297b", 2, page_prefix="B")
 
-for key, value in names.items():
+for key, value in metadata["page_names"].items():
 	if key in bookmarks:
 		canvas.addOutlineEntry(value, key, 0, True)
 

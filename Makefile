@@ -6,7 +6,8 @@ DPI_39=222
 DPI_25=142
 DPI_15=85
 
-DEPS=generate.py names.toml
+DEPS=generate.py metadata.toml
+
 FILES=\
 	output_s100_q90_d$(DPI_100).pdf \
 	output_s50_q90_d$(DPI_50).pdf \
