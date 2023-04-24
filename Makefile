@@ -1,15 +1,20 @@
+DPI_100=768
 DPI_50=384
 DPI_39=300
 DPI_25=192
 DPI_15=115
 
 all: \
+	output_s100_q90_d$(DPI_100).pdf \
 	output_s50_q90_d$(DPI_50).pdf \
 	output_s39_q90_d$(DPI_39).pdf \
 	output_s25_q90_d$(DPI_25).pdf \
 	output_s15_q20_d$(DPI_15).pdf
 
 DEPS=generate.py names.toml
+
+output_s100_q90_d$(DPI_100).pdf: $(patsubst ../pages/%.jpg,pages/s100_q90_%.jpg,$(wildcard ../pages/*.jpg)) $(DEPS)
+	pipenv run ./generate.py 100 90 $(DPI_100)
 
 output_s50_q90_d$(DPI_50).pdf: $(patsubst ../pages/%.jpg,pages/s50_q90_%.jpg,$(wildcard ../pages/*.jpg)) $(DEPS)
 	pipenv run ./generate.py 50 90 $(DPI_50)
@@ -25,6 +30,9 @@ output_s15_q20_d$(DPI_15).pdf: $(patsubst ../pages/%.jpg,pages/s15_q20_%.jpg,$(w
 
 pages:
 	mkdir -p pages
+
+pages/s100_q90_%.jpg: ../pages/%.jpg | pages
+	convert -quality 90 -resize 100% $< $@
 
 pages/s50_q90_%.jpg: ../pages/%.jpg | pages
 	convert -quality 90 -resize 50% $< $@
