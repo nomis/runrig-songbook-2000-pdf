@@ -38,19 +38,24 @@ pages:
 	mkdir -p pages
 
 pages/s100_q90_%.jpg: ../pages/%.jpg | pages
-	convert -quality 90 -resize 100% $< $@
+	convert -quality 90 -resize 100% $< $@~
+	mv $@~ $@
 
 pages/s50_q90_%.jpg: ../pages/%.jpg | pages
-	convert -quality 90 -resize 50% $< $@
+	convert -quality 90 -resize 50% $< $@~
+	mv $@~ $@
 
 pages/s39_q90_%.jpg: ../pages/%.jpg | pages
-	convert -quality 90 -resize 39% $< $@
+	convert -quality 90 -resize 39% $< $@~
+	mv $@~ $@
 
 pages/s25_q90_%.jpg: ../pages/%.jpg | pages
-	convert -quality 90 -resize 25% $< $@
+	convert -quality 90 -resize 25% $< $@~
+	mv $@~ $@
 
 pages/s15_q20_%.jpg: ../pages/%.jpg | pages
-	convert -quality 20 -resize 15% $< $@
+	convert -quality 20 -resize 15% $< $@~
+	mv $@~ $@
 
 clean:
-	rm -f pages/s*_q*_*.jpg
+	rm -f pages/s*_q*_*.jpg*
