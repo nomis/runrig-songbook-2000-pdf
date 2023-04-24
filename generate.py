@@ -33,10 +33,10 @@ names = toml.load("names.toml")
 prefix = f"s{args.size}_q{args.quality}_"
 scale = 72 / args.dpi
 
-subset = ""
+suffix = ""
 if args.subset:
-	subset = "_subset_" + "_".join(args.subset)
-out_filename = f"{prefix}output{subset}.pdf"
+	suffix = "_subset_" + "_".join(args.subset)
+out_filename = f"output_{prefix}d{args.dpi}{suffix}.pdf"
 canvas = Canvas(f"{out_filename}~")
 
 prev_page_num = 0
